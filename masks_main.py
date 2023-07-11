@@ -1,5 +1,5 @@
 import numpy as np
-import astropy.pyfits as pyfits
+import astropy.io.fits as pyfits
 from masks_functs import *
 from design_class import *
 
