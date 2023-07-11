@@ -10,7 +10,8 @@ def check_placement(coords, design, rng, aperture):
 
 def add_hole(hrad, rng, aperture):
     # generates coordinates for a new hole, checks that hole doesn't intersect spiders or other holes and falls within aperture
-    coords = rng.integer(low=-5, high=5, size=2, dtype=float)
+    rand_nums = rng.integer(low=-1, high=1, size=2, dtype=float)
+    coords = rand_nums * 11
     check_placement(coords, hrad, rng, aperture)
     return coords
 
