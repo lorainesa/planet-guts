@@ -1,5 +1,8 @@
-from mask_testing_pipeline import x_choose_y
 import numpy as np
+import math
+
+def x_choose_y(n, k):
+    return math.factorial(n) // math.factorial(k) // math.factorial(n - k)
 
 class design:
     def __init__(self, nholes, hrad, xy_coords, uv_coords):
