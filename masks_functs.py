@@ -1,3 +1,5 @@
+import numpy as np
+
 def check_placement(coords, design, rng, aperture):
     # check to make sure hole falls onto a mirror segment and doesn't overlap a spider or another hole
     # uses a boolean mask of the aperture and holes already placed
@@ -12,13 +14,13 @@ def add_hole(hrad, rng, aperture):
     check_placement(coords, hrad, rng, aperture)
     return coords
 
-def check_redundancy(design):
+def check_redundancy(my_design):
     # checks that baselines are 0% redundant
-    uv_rad = design.hrad
+    uv_rad = my_design.hrad
     n = 50000
-    for i in design.uv_coords:
+    for i in my_design.uv_coords:
         b1 = i
-        for j in design.uv_coords:
+        for j in my_design.uv_coords:
             if i[0] == j[0] and i[1] == j[1]:
                 continue
             b2 = j
@@ -36,5 +38,5 @@ def check_redundancy(design):
                         count2 += 1
                 red = 100 * np.round(count2 / count1, 2)
                 if red > 0:
-                    return 0
-    return 1
+                    return 1
+    return 0
