@@ -1,4 +1,5 @@
 import numpy as np
+import astropy.pyfits as pyfits
 from masks_functs import *
 from design_class import *
 
@@ -7,7 +8,7 @@ def main(nholes, hrad):
         my_design = design(nholes, hrad) # initialize design object
         rng = np.random.default_rng(seed=None) # set random number generator
         xy_coords = np.empty([nholes, 2]) # initialize array to hold x,y coordinates
-        #aperture = # set Keck primary aperture
+        aperture = pyfits.getdata('/Users/kenzie/Desktop/CodeAstro/planet-guts/keck_aperture.fits') # set Keck primary aperture
         for i in range(nholes): # keep adding and checking a single hole until it's acceptable
             xy_coords[i] = add_hole(hrad, rng, aperture)
         my_design.xy_coords = xy_coords # once we get enough acceptable holes, add them to design
