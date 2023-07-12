@@ -16,7 +16,7 @@ def x_choose_y(n, k):
     return math.factorial(n) // math.factorial(k) // math.factorial(n - k)
 
 class design:
-    def __init__(self, nholes, hrad, xy_coords, uv_coords):
+    def __init__(self, nholes, hrad):
         self.nholes = nholes
         self.hrad = hrad
         self.xy_coords = np.empty([nholes, 2])
