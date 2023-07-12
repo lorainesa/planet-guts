@@ -2,6 +2,17 @@ import numpy as np
 import math
 
 def x_choose_y(n, k):
+    """ x choose y
+
+    Performs x choose y calculation.
+
+    Args: 
+        n (float): x
+        k (float): y
+    
+    Returns:
+        float: Result of calculation.
+    """
     return math.factorial(n) // math.factorial(k) // math.factorial(n - k)
 
 class design:
@@ -29,5 +40,4 @@ class design:
     def get_uvs(self):
         self.uv_coords = self.make_uv_coords(self.uv_coords)
         return self.uv_coords
-
-                
+                    
