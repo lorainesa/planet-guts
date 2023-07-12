@@ -1,6 +1,6 @@
 import numpy as np
 
-def check_placement(coords, design, rng, aperture):
+def check_placement(coords, hrad, rng, aperture):
     """ Check placement of hole
 
     Called by add_hole(). Checks that a proposed hole doesn't overlap other holes or spiders or mirror segment edges, and that it falls within the Keck aperture. If a hole does not meet requirements, hole is discarded and add_hole() is called again. Repeats until an acceptable hole location is found.
@@ -17,8 +17,8 @@ def check_placement(coords, design, rng, aperture):
     [ap_x, ap_y] = 100 * coords + [545, 545] # convert proposed hole center coords to coords in aperture array
     for i in range(1090):
         for j in range(1090):
-            if (np.sqrt((i - ap_y)**2 + (j - ap_x)**2) < design.hrad) and (aperture[i, j] == 0):
-                new_coords = add_hole(design.hrad, rng, aperture)
+            if (np.sqrt((i - ap_y)**2 + (j - ap_x)**2) < hrad) and (aperture[i, j] == 0):
+                new_coords = add_hole(hrad, rng, aperture)
                 return new_coords
             else:
                 return coords
@@ -37,7 +37,7 @@ def add_hole(hrad, rng, aperture):
         array: Returns a numpy array of the accepted hole (x,y) coordinates.
     """
 
-    rand_nums = rng.integer(low=-1, high=1, size=2, dtype=float)
+    rand_nums = rng.integers(low=-1, high=1, size=2)
     coords = rand_nums * 11
     coords = check_placement(coords, hrad, rng, aperture)
     return coords
