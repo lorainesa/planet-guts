@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 def check_placement(coords, hrad, rng, aperture):
     """ Check placement of hole
@@ -14,14 +15,15 @@ def check_placement(coords, hrad, rng, aperture):
     Returns:
         numpy array: returns the accepted (x,y) coordinates
     """
-    [ap_x, ap_y] = 100 * coords + [545, 545] # convert proposed hole center coords to coords in aperture array
+
+    hcoords = 100 * coords + [545, 545] # convert proposed hole center coords to coords in aperture array
     for i in range(1090):
         for j in range(1090):
-            if (np.sqrt((i - ap_y)**2 + (j - ap_x)**2) < hrad) and (aperture[i, j] == 0):
-                new_coords = add_hole(hrad, rng, aperture)
-                return new_coords
-            else:
-                return coords
+            if np.sqrt((i - hcoords[0])**2 + (j - hcoords[1])**2) < (100 * hrad):
+                if aperture[i, j] == 0:
+                    print('Oh no! Bad hole placement :( Trying again!')
+                    return 0
+    return 1
 
 def add_hole(hrad, rng, aperture):
     """ Propose a new mask hole
@@ -36,11 +38,13 @@ def add_hole(hrad, rng, aperture):
     Returns:
         array: Returns a numpy array of the accepted hole (x,y) coordinates.
     """
-
-    rand_nums = rng.integers(low=-1, high=1, size=2)
-    coords = rand_nums * 11
-    coords = check_placement(coords, hrad, rng, aperture)
-    return coords
+    while 1:
+        print('Placing hole...')
+        rand_nums = rng.integers(low=-100, high=100, size=2)
+        coords = (11/2) * rand_nums / 100.
+        if check_placement(coords, hrad, rng, aperture) == 1:
+            print('Yay! found a good hole placement.')
+            return np.array(coords)
 
 def check_redundancy(my_design):
     """ Check mask baselines for redundancy
@@ -78,3 +82,16 @@ def check_redundancy(my_design):
                 if red > 0:
                     return 1
     return 0
+
+def plot_design(my_design, aperture):
+    hcoords = 100 * my_design.xy_coords + [545, 545] # convert hole center coords to coords in aperture array
+    for i in range(1090):
+        for j in range(1090):
+            for a in range(my_design.nholes):
+                if np.sqrt((i - hcoords[a, 0])**2 + (j - hcoords[a, 1])**2) < (100 * my_design.hrad):
+    
+                     aperture[i, j] = 0
+    plt.figure()
+    plt.imshow(aperture)
+    plt.colorbar()
+    plt.show()
